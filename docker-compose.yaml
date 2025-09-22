@@ -1,0 +1,51 @@
+# NOTE: This compose file is intended to example a single node cluster configuration. 
+services:
+  postgres:
+    image: postgres:16
+    restart: always
+    environment:
+      # Passing the db name automatically create it for us
+      - NZYME_POSTGRES_DB=nzyme
+      - POSTGRES_USER=nzyme
+      - POSTGRES_PASSWORD=nzyme
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./examples/init.sql:/docker-entrypoint-initdb.d/init.sql
+    network_mode: host
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER}"]
+      interval: 10s
+      retries: 5
+
+  nzyme-tap:
+    image: nzyme-tap:develop
+    network_mode: host
+    environment:
+      - ACCEPT_INSECURE_CERTS=true 
+      - LEADER_SECRET=QZ46lA6pSIs8H7PwCP6sFHYKBCh1rtjqNiHWKH8dUZIDYPyrLGNLSP8yubws3CjS
+    cap_add:
+      - CAP_NET_ADMIN
+      - CAP_NET_RAW
+    volumes:
+      - ./examples/nzyme-tap-adapter:/etc/nzyme/nzyme-tap-config
+
+  nzyme-node:
+    image: nzyme-node:develop
+    network_mode: host
+    restart: on-failure
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 4GB
+        reservations:
+          cpus:  '1'
+          memory: 2GB
+    ports: 
+      - "22900:22900"
+    volumes:
+      - nzyme_node_keys:/usr/share/nzyme/crypto
+
+volumes:
+  postgres_data:
+  nzyme_node_keys:

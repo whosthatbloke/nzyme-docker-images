@@ -1,0 +1,51 @@
+[general]
+leader_secret = "${LEADER_SECRET}"
+leader_uri = "${LEADER_URL}"
+accept_insecure_certs = ${ACCEPT_INSURE_CERTS}
+
+[performance]
+ethernet_brokers = ${PERFORMANCE_ETHERNET_BROKERS} # 1
+wifi_brokers = ${PERFORMANCE_WIFI_BROKERS} # 1
+wifi_broker_buffer_capacity = ${PERFORMANCE_WIFI_BROKER_BUFFER_CAPACITY} # 65535
+ethernet_broker_buffer_capacity = ${PERFORMANCE_ETHERNET_BROKER_BUFFER_CAPACITY} # 65535
+bluetooth_devices_pipeline_size = ${PERFORMANCE_BLUETOOTH_DEVICES_PIPELINE_SIZE} # 1024
+shared_protocol_processors = ${PERFORMANCE_SHARED_PROTOCOL_PROCESSORS} # 2
+
+[protocols.wifi]
+pipeline_size = ${PROTOCOLS_WIFI_PIPELINE_SIZE} # 16384
+processors = ${PROTOCOLS_WIFI_PROCESSORS} # 1
+
+[protocols.tcp]
+pipeline_size = ${PROTOCOLS_TCP_PIPELINE_SIZE} # 65535
+processors = ${PROTOCOLS_TCP_PROCESSORS} # 3
+reassembly_buffer_size = ${PROTOCOLS_TCP_REASSEMBLY_BUFFER_SIZE} # 1048576
+session_timeout_seconds = ${PROTOCOLS_TCP_SESSION_TIMEOUT_SECONDS} # 43200
+
+[protocols.udp]
+pipeline_size = ${PROTOCOLS_UDP_PIPELINE_SIZE} # 65535
+processors = ${PROTOCOLS_UDP_PROCESSORS} # 3
+
+[protocols.dns]
+pipeline_size = ${PROTOCOLS_DNS_PIPELINE_SIZE} # 4096
+entropy_zscore_threshold = ${PROTOCOLS_DNS_ENTROPY_ZSCORE_THRESHOLD} # 3.0
+
+[protocols.ssh]
+pipeline_size = ${PROTOCOLS_SSH_PIPELINE_SIZE} # 1024
+
+[protocols.socks]
+pipeline_size = ${PROTOCOLS_SOCKS_PIPELINE_SIZE} # 1024
+
+[protocols.arp]
+pipeline_size = ${PROTOCOLS_ARP_PIPELINE_SIZE} # 1024
+
+[protocols.dhcpv4]
+pipeline_size = ${PROTOCOLS_DHCPV4_PIPELINE_SIZE} # 1024
+
+[protocols.uav_remote_id]
+pipeline_size = ${PROTOCOLS_UAV_REMOTE_ID_PIPELINE_SIZE} # 1024
+
+[misc]
+training_period_minutes = ${MISC_TRAINING_PERIOD_MINUTES} # 5
+context_mac_ip_retention_hours = ${MISC_CONTEXT_MAC_IP_RETENTION_HOURS} # 36
+context_mac_hostname_retention_hours = ${MISC_CONTEXT_MAC_HOSTNAME_RETENTION_HOURS} # 36
+

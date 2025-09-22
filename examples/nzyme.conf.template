@@ -1,0 +1,31 @@
+# Configuration reference: https://go.nzyme.org/configuration-reference
+
+general: {
+    name: ${NZYME_NODE}
+    database_path: "postgresql://${POSTGRES_HOST}:5432/nzyme?user=nzyme&password=${POSTGRES_PASSWORD}"
+    data_directory: /usr/share/nzyme
+    plugin_directory: /usr/share/nzyme/plugins
+    crypto_directory: /usr/share/nzyme/crypto
+    ntp_server: ${NTP_SERVER}
+    versionchecks: ${VERSION_CHECKS}
+}
+
+interfaces: {
+    rest_listen_uri: "${REST_LISTEN_URI}"
+    http_external_uri: "${HTTP_EXTERNAL_URI}"
+}
+
+performance: {
+    report_processor_pool_size: ${REPORT_PROCESSOR_POOL_SIZE}
+}
+
+protocols: {
+    tcp: {
+        session_timeout_seconds: ${SESSION_TIMEOUT_SECONDS}
+    }
+}
+
+misc: {
+    # custom_title: "nzyme - Network Defense System"
+    # custom_favicon_url: "https://example.org/favicon.png"
+}

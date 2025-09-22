@@ -1,0 +1,39 @@
+name: Docker Bake Build and Push
+
+on:
+  workflow_dispatch:
+    inputs:
+      VERSION:
+        description: 'The nzyme-node/tap version to build (e.g., 15, 17)'
+        required: true
+        default: '17'
+        type: string
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and Push with Docker Bake
+        uses: docker/bake-action@v4
+        with:
+          files: |
+            ./docker-bake.hcl
+          push: true
+          set: |
+            VERSION=${{ github.event.inputs.VERSION }}
+          targets: |
+            nzyme_node_v2
+            nzyme_tap_v2
