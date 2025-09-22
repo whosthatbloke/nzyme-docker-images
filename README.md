@@ -41,11 +41,17 @@ To build `nzyme-node` version 17:
 VERSION=17 docker buildx bake nzyme_node_v2
 ```
 
-## Usage Examples
+## Example
 
-You can find example docker-compose.yaml files and configuration templates in the examples folder.
+You can find example `docker-compose.yaml` file and configuration templates in the `examples/` folder. The example tap and node configuration have been tested with the `v2a17` images. 
 
-A generate_tap_conf.sh script is provided to help you quickly create a custom adapter configuration file.
+You can generate your own `nzyme-tap-adapter` configuration file by running the provided `generate_tap_conf.sh` script. SImply copy/pipe the output the `nzyme-tap-adapter` at the project level (*this file is ignored git*),
+
+First, setup postgres by running `docker compose run -d postgres`. Once postgres is up, run `docker compose run -d nzyme-node`. Once nzyme is up and running at `http://localhost:22900`, setup a tap and grab it's secret; then update the `LEADER_SECRET` environment variable in the compose file. Then run `docker compose run -d nzyme-tap`. You can run `docker compose logs` to see what's happening in the background.
+
+You have sucessfully deployed nzyme!
+
+
 
 ## Contribution
 

@@ -2,12 +2,13 @@
 # Script to auto generate nzyme-tap config from connected devices on the host
 
 if [ $# -ne 1 ]; then
-    echo "No nzyme-tap images tag passed. Example: sh generate_conf_config.sh v2a10"
+    echo "No nzyme-tap images tag passed. Example: sh generate_conf_config.sh v2a17"
     exit 1
 fi
 
 docker_image_tag=$1
-docker_image_name=nzyme-tap
+docker_image_name=randomguyoninternet/nzyme-tap
+docker pull $docker_image_name:$docker_image_tag
 
 # Check if the image exists
 docker images | grep "$docker_image_name" | grep -q "$docker_image_tag"
@@ -17,5 +18,6 @@ if [ $? -eq 1 ]; then
     exit 1
 fi
 
+echo "============ Tap configuration output. Don't copy the 'IMPORTANT' note. ============"
 docker run --network host --cap-add=NET_ADMIN --cap-add=CAP_NET_RAW --rm $docker_image_name:$docker_image_tag /usr/bin/nzyme-tap --generate-channels
 

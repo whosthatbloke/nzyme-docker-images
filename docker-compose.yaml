@@ -18,8 +18,9 @@ services:
       retries: 5
 
   nzyme-tap:
-    image: nzyme-tap:develop
+    image: randomguyoninternet/nzyme-tap:v2a17
     network_mode: host
+    restart: on-failure
     environment:
       - ACCEPT_INSECURE_CERTS=true 
       - LEADER_SECRET=QZ46lA6pSIs8H7PwCP6sFHYKBCh1rtjqNiHWKH8dUZIDYPyrLGNLSP8yubws3CjS
@@ -30,7 +31,7 @@ services:
       - ./examples/nzyme-tap-adapter:/etc/nzyme/nzyme-tap-config
 
   nzyme-node:
-    image: nzyme-node:develop
+    image: randomguyoninternet/nzyme-tap:v2a17
     network_mode: host
     restart: on-failure
     deploy:
