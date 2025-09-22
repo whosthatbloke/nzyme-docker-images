@@ -1,4 +1,4 @@
-# Nzyme Unofficial Docker Images 🧪
+# Nzyme's (Unofficial) Docker Images
 
 Unofficial Docker images for **Nzyme nodes** and **taps**, providing a streamlined, dynamic, and secure way to deploy Nzyme.
 
