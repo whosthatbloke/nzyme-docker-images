@@ -29,7 +29,7 @@ services:
       - CAP_NET_RAW
     volumes:
       - ./examples/nzyme-tap-adapter:/etc/nzyme/nzyme-tap-config
-      - ./examples/nzyme/nzyme-tap.conf.template:/etc/nzyme/nzyme-tap.conf.template
+      - ./examples/nzyme-tap.conf.template:/etc/nzyme/nzyme-tap.conf.template
 
   nzyme-node:
     image: randomguyoninternet/nzyme-node:v2a17
@@ -46,7 +46,7 @@ services:
     ports: 
       - "22900:22900"
     volumes:
-      - ./examples/nzyme/nzyme.conf.template:/etc/nzyme/nzyme.conf.template
+      - ./examples/nzyme.conf.template:/etc/nzyme/nzyme.conf.template
       # NOTE: This is required as, if the container restart, it won't be able to
       # join the nzyme cluster (since it calls out for other nodes, but there are no other nodes)
       - nzyme_node_keys:/usr/share/nzyme/crypto

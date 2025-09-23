@@ -47,7 +47,7 @@ You can find example `docker-compose.yaml` file and configuration templates in t
 
 You can generate your own `nzyme-tap-adapter` configuration file by running the provided `generate_tap_conf.sh` script. SImply copy/pipe the output the `nzyme-tap-adapter` at the project level (*this file is ignored git*),
 
-First, setup postgres by running `docker compose run -d postgres`. Once postgres is up, run `docker compose run -d nzyme-node`. Once nzyme is up and running at `http://localhost:22900`, setup a tap and grab it's secret; then update the `LEADER_SECRET` environment variable in the compose file. Then run `docker compose run -d nzyme-tap`. You can run `docker compose logs` to see what's happening in the background.
+First, setup postgres by running `docker compose up -d postgres`. Once postgres is up, run `docker compose up -d nzyme-node`. Once nzyme is up and running at `http://localhost:22900`, setup a tap and grab it's secret; then update the `LEADER_SECRET` environment variable in the compose file. Then run `docker compose up -d nzyme-tap`. You can run `docker compose logs` to see what's happening in the background.
 
 You have sucessfully deployed nzyme!
 
