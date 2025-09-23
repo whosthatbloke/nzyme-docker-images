@@ -4,18 +4,18 @@ services:
     image: postgres:16
     restart: always
     environment:
-      # Passing the db name automatically create it for us
-      - NZYME_POSTGRES_DB=nzyme
+      - POSTGRES_DB=nzyme
       - POSTGRES_USER=nzyme
       - POSTGRES_PASSWORD=nzyme
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./examples/init.sql:/docker-entrypoint-initdb.d/init.sql
-    network_mode: host
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER}"]
       interval: 10s
       retries: 5
+    networks:
+      - nzyme-net
 
   nzyme-tap:
     image: randomguyoninternet/nzyme-tap:v2a17
@@ -23,18 +23,26 @@ services:
     restart: on-failure
     environment:
       - ACCEPT_INSECURE_CERTS=true 
-      - LEADER_SECRET=QZ46lA6pSIs8H7PwCP6sFHYKBCh1rtjqNiHWKH8dUZIDYPyrLGNLSP8yubws3CjS
+      - LEADER_SECRET=CQl7qk8iIe6MCNdVnYSbTrQ2KQFJZJnjb2omMAGqQStDuYnzfHT0B7MIKeiLs4C6
+      - LEADER_URL=https://0.0.0.0:22900
     cap_add:
       - CAP_NET_ADMIN
       - CAP_NET_RAW
     volumes:
-      - ./examples/nzyme-tap-adapter:/etc/nzyme/nzyme-tap-config
+      - ./nzyme-tap-adapter:/etc/nzyme/nzyme-tap-config
       - ./examples/nzyme-tap.conf.template:/etc/nzyme/nzyme-tap.conf.template
+
 
   nzyme-node:
     image: randomguyoninternet/nzyme-node:v2a17
-    network_mode: host
     restart: on-failure
+    environment:
+      - POSTGRES_HOST=postgres
+      - POSTGRES_DB=nzyme
+      - POSTGRES_USER=nzyme
+      - POSTGRES_PASSWORD=nzyme
+      - REST_LISTEN_URI=https://0.0.0.0:22900
+      - HTTP_EXTERNAL_URI=https://0.0.0.0:22900
     deploy:
       resources:
         limits:
@@ -50,7 +58,13 @@ services:
       # NOTE: This is required as, if the container restart, it won't be able to
       # join the nzyme cluster (since it calls out for other nodes, but there are no other nodes)
       - nzyme_node_keys:/usr/share/nzyme/crypto
+    networks:
+      - nzyme-net
 
 volumes:
   postgres_data:
   nzyme_node_keys:
+
+networks:
+  nzyme-net:
+    driver: bridge

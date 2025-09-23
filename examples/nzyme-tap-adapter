@@ -1,3 +1,6 @@
+# THIS IS AN EXAMPLE. This config will not work for you.
+# Use the 'generate_tap_conf.sh' script. This file's intent is to show what to copy
+# from the scripts output.
 [wifi_interfaces.wlo1]
 active = true
 channels_2g = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
