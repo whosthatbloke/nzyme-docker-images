@@ -32,7 +32,7 @@ services:
       - ./examples/nzyme/nzyme-tap.conf.template:/etc/nzyme/nzyme-tap.conf.template
 
   nzyme-node:
-    image: randomguyoninternet/nzyme-tap:v2a17
+    image: randomguyoninternet/nzyme-node:v2a17
     network_mode: host
     restart: on-failure
     deploy:
