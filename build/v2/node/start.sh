@@ -13,7 +13,6 @@ export INITIAL_HEAP_SIZE_IN_GB=${INITIAL_HEAP_SIZE_IN_GB:-1}
 export MAX_HEAP_SIZE_IN_GB=${MAX_HEAP_SIZE_IN_GB:-1}
 export NZYME_LOG_FILE=${NZYME_LOG_FILE:-"/var/log/nzyme/nzyme.log"}
 export NODE_ID=${NODE_ID:-"550e8400-e29b-41d4-a716-446655440000"}
-export MIGRATE_NZYME_DATABASE=${MIGRATE_NZYME_DATABASE-true}
 
 announce() {
      lines="***************************************"
@@ -32,11 +31,6 @@ echo -n 'NZYME_JAVA_OPTS="-Xms${INITIAL_HEAP_SIZE_IN_GB}g -Xmx${MAX_HEAP_SIZE_IN
 
 announce "Setting node ID"
 echo -n "${NODE_ID}" > /usr/share/nzyme/node_id
-
-if [ "${MIGRATE_NZYME_DATABASE}" = "true" ]; then
-     announce "Running migration job"
-     nzyme --migrate-database
-fi
 
 nzyme &
 while [ ! -f "$NZYME_LOG_FILE" ]; do
