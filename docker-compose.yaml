@@ -19,11 +19,12 @@ services:
 
   nzyme-tap:
     image: randomguyoninternet/nzyme-tap:v2a17
+    pull_policy: always
     network_mode: host
     restart: on-failure
     environment:
       - ACCEPT_INSECURE_CERTS=true 
-      - LEADER_SECRET=CQl7qk8iIe6MCNdVnYSbTrQ2KQFJZJnjb2omMAGqQStDuYnzfHT0B7MIKeiLs4C6
+      - LEADER_SECRET=USAjPlwXrKZZjEkmcoQuqcllPJgVv3jifar76VwzogeyF6dG7TxSHHg0LLR4OVsK
       - LEADER_URL=https://0.0.0.0:22900
     cap_add:
       - CAP_NET_ADMIN
@@ -35,7 +36,7 @@ services:
 
   nzyme-node:
     image: randomguyoninternet/nzyme-node:v2a17
-    restart: on-failure
+    pull_policy: always
     environment:
       - POSTGRES_HOST=postgres
       - POSTGRES_DB=nzyme
@@ -43,14 +44,16 @@ services:
       - POSTGRES_PASSWORD=nzyme
       - REST_LISTEN_URI=https://0.0.0.0:22900
       - HTTP_EXTERNAL_URI=https://0.0.0.0:22900
+      - INITIAL_HEAP_SIZE_IN_GB=2
+      - MAX_HEAP_SIZE_IN_GB=4
     deploy:
       resources:
         limits:
-          cpus: '2'
-          memory: 4GB
+          cpus: '4'
+          memory: 9GB
         reservations:
-          cpus:  '1'
-          memory: 2GB
+          cpus:  '4'
+          memory: 8GB
     ports: 
       - "22900:22900"
     volumes:
