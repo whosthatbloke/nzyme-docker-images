@@ -33,10 +33,39 @@ services:
       - ./nzyme-tap-adapter:/etc/nzyme/nzyme-tap-config
       - ./examples/nzyme-tap.conf.template:/etc/nzyme/nzyme-tap.conf.template
 
+  nzyme-node-migration:
+    image: randomguyoninternet/nzyme-node-migration:v2a17
+    pull_policy: always
+    # image: nzyme-node-migration:develop
+    environment:
+      - POSTGRES_HOST=postgres
+      - POSTGRES_DB=nzyme
+      - POSTGRES_USER=nzyme
+      - POSTGRES_PASSWORD=nzyme
+      - REST_LISTEN_URI=https://0.0.0.0:22900
+      - HTTP_EXTERNAL_URI=https://0.0.0.0:22900
+      - INITIAL_HEAP_SIZE_IN_GB=1
+      - MAX_HEAP_SIZE_IN_GB=1
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 1GB
+        reservations:
+          cpus:  '1'
+          memory: 1GB
+    volumes:
+      - ./examples/nzyme.conf.template:/etc/nzyme/nzyme.conf.template
+      # NOTE: This is required as, if the container restart, it won't be able to
+      # join the nzyme cluster (since it calls out for other nodes, but there are no other nodes)
+      - nzyme_node_keys:/usr/share/nzyme/crypto
+    networks:
+      - nzyme-net
 
   nzyme-node:
     image: randomguyoninternet/nzyme-node:v2a17
     pull_policy: always
+    # image: nzyme-node:develop
     environment:
       - POSTGRES_HOST=postgres
       - POSTGRES_DB=nzyme

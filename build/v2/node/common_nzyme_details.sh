@@ -31,9 +31,3 @@ echo -n 'NZYME_JAVA_OPTS="-Xms${INITIAL_HEAP_SIZE_IN_GB}g -Xmx${MAX_HEAP_SIZE_IN
 
 announce "Setting node ID"
 echo -n "${NODE_ID}" > /usr/share/nzyme/node_id
-
-nzyme &
-while [ ! -f "$NZYME_LOG_FILE" ]; do
-     sleep 1
-done
-tail -f "$NZYME_LOG_FILE"

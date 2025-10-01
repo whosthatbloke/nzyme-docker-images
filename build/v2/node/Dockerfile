@@ -1,4 +1,4 @@
-FROM base_image
+FROM base_image AS base
 
 ARG PORT
 ARG DOWNLOAD_TARGET
@@ -22,12 +22,23 @@ RUN curl -L ${DOWNLOAD_TARGET} > ${NZYME_DEB_FILE} && \
     # TODO: See if we still need this
     chmod u=rw /etc/default/nzyme 
 
-WORKDIR /etc/nzyme  
-COPY start.sh /etc/nzyme/
-RUN chmod +x start.sh && \
-    find / -name '*nzyme*' -exec chown -R nzyme:nzyme {} +
+WORKDIR /etc/nzyme
+RUN find / -name '*nzyme*' -exec chown -R nzyme:nzyme {} +
+
+COPY --chown=nzyme:nzyme common_nzyme_details.sh /etc/nzyme/
+RUN chmod +x /etc/nzyme/common_nzyme_details.sh
 
 USER nzyme
 EXPOSE ${PORT}
 
-CMD ["sh", "/etc/nzyme/start.sh"]
+FROM base AS nzyme-node
+
+COPY --chown=nzyme:nzyme run_nzyme_node.sh /etc/nzyme
+RUN chmod +x /etc/nzyme/run_nzyme_node.sh
+CMD ["bash", "/etc/nzyme/run_nzyme_node.sh"]
+
+FROM base AS nzyme-node-migration
+
+COPY --chown=nzyme:nzyme run_nzyme_node_migration.sh /etc/nzyme
+RUN chmod +x /etc/nzyme/run_nzyme_node_migration.sh
+CMD ["bash", "/etc/nzyme/run_nzyme_node_migration.sh"]
