@@ -1,8 +1,6 @@
 #!/bin/bash
+set -euo pipefail
 source /etc/nzyme/common_nzyme_details.sh
 
-nzyme &
-while [ ! -f "$NZYME_LOG_FILE" ]; do
-     sleep 1
-done
-tail -f "$NZYME_LOG_FILE"
+# Keep Nzyme as PID 1 so Docker sees its exit status and forwards signals.
+exec nzyme

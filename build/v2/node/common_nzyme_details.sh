@@ -1,8 +1,10 @@
 #!/bin/bash
 export PATH="/usr/local/bin/nzyme:$PATH"
 export POSTGRES_HOST=${POSTGRES_HOST:-localhost}
+export POSTGRES_DB=${POSTGRES_DB:-nzyme}
+export POSTGRES_USER=${POSTGRES_USER:-nzyme}
 export NZYME_NODE=${NZYME_NODE:-nzyme-node-01}
-export POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-changemeplease}
+export POSTGRES_PASSWORD=${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD before starting Nzyme}
 export NTP_SERVER=${NTP_SERVER:-pool.ntp.org}
 export VERSION_CHECKS=${VERSION_CHECKS:-true}
 export REST_LISTEN_URI=${REST_LISTEN_URI:-"https://127.0.0.1:22900/"}

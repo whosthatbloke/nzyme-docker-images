@@ -2,6 +2,7 @@ FROM base_image AS base
 
 ARG PORT
 ARG DOWNLOAD_TARGET
+ARG NZYME_DEB_SHA256
 ARG NZYME_USER_ID
 ARG DEPENDENCIES
 
@@ -14,7 +15,8 @@ RUN apt update && \
         curl \ 
         ${DEPENDENCIES}
 
-RUN curl -L ${DOWNLOAD_TARGET} > ${NZYME_DEB_FILE} && \
+RUN curl -fSL --retry 3 "${DOWNLOAD_TARGET}" -o "${NZYME_DEB_FILE}" && \
+    echo "${NZYME_DEB_SHA256}  ${NZYME_DEB_FILE}" | sha256sum --check - && \
     dpkg -i ${NZYME_DEB_FILE} && \
     rm ${NZYME_DEB_FILE} && \
     apt purge -y curl && \

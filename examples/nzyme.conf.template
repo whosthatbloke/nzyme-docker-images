@@ -2,7 +2,7 @@
 
 general: {
     name: ${NZYME_NODE}
-    database_path: "postgresql://${POSTGRES_HOST}:5432/nzyme?user=nzyme&password=${POSTGRES_PASSWORD}"
+    database_path: "postgresql://${POSTGRES_HOST}:5432/${POSTGRES_DB}?user=${POSTGRES_USER}&password=${POSTGRES_PASSWORD}"
     data_directory: /usr/share/nzyme
     plugin_directory: /usr/share/nzyme/plugins
     crypto_directory: /usr/share/nzyme/crypto

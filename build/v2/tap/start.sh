@@ -1,8 +1,9 @@
-#!/bin/bash
+#!/bin/sh
+set -eu
 export LOG_LEVEL=${LOG_LEVEL:-info}
 export LEADER_SECRET=${LEADER_SECRET:-""}
-export LEADER_URL=${LEADER_URL:-"https://0.0.0.0:22900"}
-export ACCEPT_INSURE_CERTS=${ACCEPT_INSURE_CERTS:-true}
+export LEADER_URL=${LEADER_URL:-"https://127.0.0.1:22900"}
+export ACCEPT_INSECURE_CERTS=${ACCEPT_INSECURE_CERTS:-false}
 # Set environment variables with default values
 export PERFORMANCE_ETHERNET_BROKERS="${PERFORMANCE_ETHERNET_BROKERS:-1}"
 export PERFORMANCE_WIFI_BROKERS="${PERFORMANCE_WIFI_BROKERS:-1}"
@@ -38,7 +39,9 @@ fi
 echo "---------- Starting nzyme tap -----------"
 
 config_file=/etc/nzyme/nzyme-tap.conf
-envsubst < /etc/nzyme/nzyme-tap.conf.template > $config_file
-cat /etc/nzyme/nzyme-tap-config >> $config_file
+envsubst < /etc/nzyme/nzyme-tap.conf.template > "$config_file"
+if [ -f /etc/nzyme/nzyme-tap-config ]; then
+    cat /etc/nzyme/nzyme-tap-config >> "$config_file"
+fi
 
-/usr/bin/nzyme-tap --configuration-file $config_file --log-level $LOG_LEVEL
+exec /usr/bin/nzyme-tap --configuration-file "$config_file" --log-level "$LOG_LEVEL"

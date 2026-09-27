@@ -6,12 +6,12 @@ services:
     environment:
       - POSTGRES_DB=nzyme
       - POSTGRES_USER=nzyme
-      - POSTGRES_PASSWORD=nzyme
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./examples/init.sql:/docker-entrypoint-initdb.d/init.sql
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER}"]
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER}"]
       interval: 10s
       retries: 5
     networks:
@@ -23,9 +23,9 @@ services:
     network_mode: host
     restart: on-failure
     environment:
-      - ACCEPT_INSECURE_CERTS=true 
-      - LEADER_SECRET=USAjPlwXrKZZjEkmcoQuqcllPJgVv3jifar76VwzogeyF6dG7TxSHHg0LLR4OVsK
-      - LEADER_URL=https://0.0.0.0:22900
+      - ACCEPT_INSECURE_CERTS=${ACCEPT_INSECURE_CERTS:-false}
+      - LEADER_SECRET=${LEADER_SECRET:-}
+      - LEADER_URL=${LEADER_URL:-https://127.0.0.1:22900}
     cap_add:
       - CAP_NET_ADMIN
       - CAP_NET_RAW
@@ -41,9 +41,9 @@ services:
       - POSTGRES_HOST=postgres
       - POSTGRES_DB=nzyme
       - POSTGRES_USER=nzyme
-      - POSTGRES_PASSWORD=nzyme
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
       - REST_LISTEN_URI=https://0.0.0.0:22900
-      - HTTP_EXTERNAL_URI=https://0.0.0.0:22900
+      - HTTP_EXTERNAL_URI=https://127.0.0.1:22900
       - INITIAL_HEAP_SIZE_IN_GB=1
       - MAX_HEAP_SIZE_IN_GB=1
     deploy:
@@ -70,9 +70,9 @@ services:
       - POSTGRES_HOST=postgres
       - POSTGRES_DB=nzyme
       - POSTGRES_USER=nzyme
-      - POSTGRES_PASSWORD=nzyme
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
       - REST_LISTEN_URI=https://0.0.0.0:22900
-      - HTTP_EXTERNAL_URI=https://0.0.0.0:22900
+      - HTTP_EXTERNAL_URI=https://127.0.0.1:22900
       - INITIAL_HEAP_SIZE_IN_GB=2
       - MAX_HEAP_SIZE_IN_GB=4
     deploy:

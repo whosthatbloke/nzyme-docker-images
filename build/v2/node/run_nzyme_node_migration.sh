@@ -1,5 +1,6 @@
 #!/bin/bash
+set -euo pipefail
 source /etc/nzyme/common_nzyme_details.sh
 
 announce "Running migration job"
-nzyme --migrate-database
+exec nzyme --migrate-database

@@ -1,6 +1,7 @@
 FROM base_image
 
 ARG DOWNLOAD_TARGET
+ARG NZYME_DEB_SHA256
 ARG DEPENDENCIES
 ARG NZYME_DEB_FILE=/tmp/nzyme_tap_install.deb
 
@@ -15,7 +16,8 @@ RUN apt update && \
         curl libcap2-bin \ 
         ${DEPENDENCIES}
 
-RUN curl -L ${DOWNLOAD_TARGET} > ${NZYME_DEB_FILE} && \ 
+RUN curl -fSL --retry 3 "${DOWNLOAD_TARGET}" -o "${NZYME_DEB_FILE}" && \
+    echo "${NZYME_DEB_SHA256}  ${NZYME_DEB_FILE}" | sha256sum --check - && \
     dpkg -i ${NZYME_DEB_FILE} && \
     rm ${NZYME_DEB_FILE} && \
     apt purge -y curl && \ 

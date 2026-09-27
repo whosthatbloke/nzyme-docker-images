@@ -1,7 +1,7 @@
 [general]
 leader_secret = "${LEADER_SECRET}"
 leader_uri = "${LEADER_URL}"
-accept_insecure_certs = ${ACCEPT_INSURE_CERTS}
+accept_insecure_certs = ${ACCEPT_INSECURE_CERTS}
 
 [performance]
 ethernet_brokers = ${PERFORMANCE_ETHERNET_BROKERS} # 1

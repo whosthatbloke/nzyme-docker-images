@@ -26,6 +26,10 @@ variable NZYME_TAP_DOCKER_IMAGE_NAME {
 
 variable VERSION {
     default = 17
+    validation {
+        condition = VERSION == 17
+        error_message = "Only Nzyme alpha.17 package filenames, dependencies, and image interfaces are verified and supported."
+    }
 }
 
 variable TAG {
@@ -47,7 +51,8 @@ target "nzyme_node_v2_common" {
     context = "build/v2/node"
     dockerfile = "Dockerfile"
     args = {
-        DOWNLOAD_TARGET = "https://github.com/nzymedefense/nzyme/releases/download/2.0.0-alpha.${VERSION}/nzyme-node_ubuntu-2404noble-noarch-2.0.0-alpha.${VERSION}.deb"
+        DOWNLOAD_TARGET = "https://github.com/nzymeorg/nzyme/releases/download/2.0.0-alpha.${VERSION}/nzyme-node_ubuntu-2404noble-noarch-2.0.0-alpha.${VERSION}.deb"
+        NZYME_DEB_SHA256 = "d62e304174659f8f0b66319c6e6b396ee8567d788d6efc86d2195f0849e8b326"
         DEPENDENCIES = "openjdk-${determine-jdk-version(VERSION)}-jre-headless gettext postgresql-client gettext"
     }
 }
@@ -72,7 +77,8 @@ target "nzyme_tap_v2" {
     context = "build/v2/tap"
     dockerfile = "Dockerfile"
     args = {       
-        DOWNLOAD_TARGET = "https://github.com/nzymedefense/nzyme/releases/download/2.0.0-alpha.${VERSION}/nzyme-tap_ubuntu-2404noble-amd64-2.0.0-alpha.${VERSION}.deb"
+        DOWNLOAD_TARGET = "https://github.com/nzymeorg/nzyme/releases/download/2.0.0-alpha.${VERSION}/nzyme-tap_ubuntu-2404noble-amd64-2.0.0-alpha.${VERSION}.deb"
+        NZYME_DEB_SHA256 = "a2e3119d3e502fa2bbc779783c85d766f66224f4f252014991a4d61435e5e805"
         DEPENDENCIES = "openjdk-${determine-jdk-version(VERSION)}-jre-headless libpcap0.8 libpcap0.8t64 gettext iw"
     }
     tags = ["${REG_HOST}${REG_PROJECT}${NZYME_TAP_DOCKER_IMAGE_NAME}:${TAG}"]
